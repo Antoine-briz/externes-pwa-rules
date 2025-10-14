@@ -1,0 +1,22 @@
+
+{
+    "name": "Guide pratique MIR CHV",
+    "short_name": "Guide pratique MIR CHV",
+    "description": "Application pour accéder à des PDF de médecine intensive.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#00bcd4",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
