@@ -1,6 +1,6 @@
-/* externes-pwa-rules — SPA
+/* externes-pwa-rules — SPA (canvas-only pdf.js)
    Flux :
-   - Accueil (couverture) -> Menu (titre + sections) -> Section (liste PDF) -> PDF (iframe)
+   - Accueil (couverture) -> Menu (titre + sections) -> Section (liste PDF) -> PDF (canvas)
    - Hash routes : #/ , #/menu , #/section/<slug> , #/pdf/<fichier>
 */
 
@@ -8,13 +8,11 @@ const BASE = "https://antoine-briz.github.io/externes-pwa-rules/"; // URL absolu
 
 let currentPage = 1;
 let pdfDoc = null;
-let currentZoom = 0.75;
-let initialDistance = 0;
 let lastSectionSlug = null;
 
-// ---------------------------
-// 1) Données : sections & PDFs
-// ---------------------------
+/* ---------------------------
+   1) Données : sections & PDFs
+--------------------------- */
 const SECTIONS = {
   generalites: {
     label: "Généralités",
@@ -104,22 +102,22 @@ const SECTIONS = {
   },
 };
 
-// ---------------------------
-// 2) Utilitaires DOM
-// ---------------------------
+/* ---------------------------
+   2) Utilitaires DOM
+--------------------------- */
 function qs(sel) { return document.querySelector(sel); }
 function clear(el) { if (el) el.innerHTML = ""; }
 function makeBtn(label, onClick, extraClasses = []) {
   const b = document.createElement("button");
   b.textContent = label;
-  b.classList.add("btn", ...extraClasses); // même classe que ton app précédente
+  b.classList.add("btn", ...extraClasses);
   b.addEventListener("click", onClick);
   return b;
 }
 
-// ----------------------------------------------------
-// 3) Accueil : clic sur couverture -> affichage du menu
-// ----------------------------------------------------
+/* ----------------------------------------------------
+   3) Accueil : clic sur couverture -> affichage du menu
+---------------------------------------------------- */
 const coverImg = document.getElementById("cover-img");
 if (coverImg) {
   coverImg.addEventListener("click", () => {
@@ -127,9 +125,9 @@ if (coverImg) {
   });
 }
 
-// ---------------------------
-// 4) Rendu des vues
-// ---------------------------
+/* ---------------------------
+   4) Rendu des vues
+--------------------------- */
 function renderHome() {
   const welcome = qs(".welcome-page");
   const menu = qs("#menu");
@@ -165,7 +163,7 @@ function renderMenu() {
   });
   list.appendChild(sectionsWrap);
 
-  // Bouton « Retour » (identique) -> URL absolue vers l'accueil
+  // Bouton « Retour » identique -> URL absolue accueil
   const backWrap = document.createElement("div");
   backWrap.className = "actions-bottom";
   backWrap.appendChild(
@@ -217,7 +215,7 @@ function renderSection(slug) {
 
   list.appendChild(linksWrap);
 
-  // Bouton « Retour » (identique) -> URL absolue vers l'accueil (comme avant)
+  // Bouton « Retour » identique -> URL absolue accueil
   const backWrap = document.createElement("div");
   backWrap.className = "actions-bottom";
   backWrap.appendChild(
@@ -228,86 +226,116 @@ function renderSection(slug) {
   clear(qs("#app"));
 }
 
-// ---------------------------
-// 5) Affichage PDF (iframe) + pdf.js optionnel
-// ---------------------------
+/* ---------------------------
+   5) Affichage PDF — pdf.js (canvas only, scale ≥ 3)
+--------------------------- */
 export function openPDF(pdfPath) {
   const appContainer = document.getElementById("app");
   if (!appContainer) return;
 
   // Cacher accueil + menu
-  const welcome = document.querySelector(".welcome-page");
-  const menu = document.querySelector("#menu");
+  const welcome = qs(".welcome-page");
+  const menu = qs("#menu");
   if (welcome) welcome.style.display = "none";
   if (menu) menu.style.display = "none";
 
-  // Vider
-  appContainer.innerHTML = "";
+  clear(appContainer);
 
-  // Conteneur viewer
+  // Conteneur du viewer (un seul canvas)
   const pdfViewer = document.createElement("div");
   pdfViewer.id = "pdfViewer";
   appContainer.appendChild(pdfViewer);
 
-  // Bouton « Retour » (identique)
-  const backButton = document.createElement("button");
-  backButton.textContent = "Retour";
-  backButton.classList.add("btn", "btn-secondary");
+  // Nav simple (Précédent / Suivant)
+  const navContainer = document.createElement("div");
+  navContainer.classList.add("pdf-nav");
+  const prevButton = makeBtn("Précédent", () => renderPage(currentPage - 1));
+  const nextButton = makeBtn("Suivant", () => renderPage(currentPage + 1));
+  navContainer.appendChild(prevButton);
+  navContainer.appendChild(nextButton);
+  appContainer.appendChild(navContainer);
+
+  // Bouton « Retour » identique (URL absolue vers l'accueil)
+  const backButton = makeBtn("Retour", () => { window.location.href = BASE; }, ["btn-secondary"]);
   backButton.style.marginTop = "10px";
-  backButton.addEventListener("click", () => {
-    window.location.href = "https://antoine-briz.github.io/externes-pwa-rules/";
-  });
-  // On l’ajoute APRÈS l’iframe pour qu’il soit visuellement en bas
-  // (mais on le crée déjà pour garder l’ordre du code clair)
-
-  const file = "./pdf/" + pdfPath;
-
-  // Astuce: on suggère un "fit to width" au viewer via le hash.
-  // Tous les viewers ne lisent pas ces paramètres, mais c’est inoffensif.
-  const viewerHint = "#view=FitH&zoom=page-width&pagemode=none";
-
-  const iframe = document.createElement("iframe");
-  iframe.src = file + viewerHint;
-  iframe.setAttribute("title", "Document PDF");
-  iframe.style.width = "100%";
-  iframe.style.height = "100vh";   // occupe toute la hauteur utile
-  iframe.style.border = "none";
-  iframe.style.overflow = "auto";
-
-  pdfViewer.appendChild(iframe);
   appContainer.appendChild(backButton);
+
+  const pdfUrl = "./pdf/" + pdfPath;
+
+  // Chargement via pdf.js
+  if (typeof pdfjsLib === "undefined" || !pdfjsLib.getDocument) {
+    pdfViewer.textContent = "pdf.js introuvable. Assurez-vous d'inclure le script dans index.html.";
+    return;
+  }
+
+  pdfjsLib.getDocument(pdfUrl).promise.then((pdf) => {
+    pdfDoc = pdf;
+    currentPage = 1;
+    renderPage(currentPage);
+  }).catch((err) => {
+    console.error(err);
+    pdfViewer.textContent = "Impossible de charger ce PDF.";
+  });
 }
 
-
+/**
+ * Rend une page en qualité élevée :
+ * - affichage "fit-to-width" (la largeur s'adapte au conteneur),
+ * - backing store ≥ 3 (qualité nette) sans changer la taille affichée.
+ */
 function renderPage(pageNum) {
   if (!pdfDoc) return;
-  const viewer = document.getElementById("pdfViewer");
-  if (!viewer) return;
   if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
 
-  pdfDoc.getPage(pageNum).then(page => {
-    const canvas = document.createElement('canvas');
+  const viewer = document.getElementById("pdfViewer");
+  if (!viewer) return;
+
+  // Nettoyer le viewer (un seul canvas)
+  viewer.innerHTML = "";
+
+  pdfDoc.getPage(pageNum).then((page) => {
+    const containerWidth = Math.min(viewer.clientWidth || window.innerWidth, 1200); // limite confortable
+    const unscaledViewport = page.getViewport({ scale: 1 });
+    const fitWidthScale = containerWidth / unscaledViewport.width;
+
+    // on veut un backing scale effectif >= 3
+    const deviceScale = window.devicePixelRatio || 1;
+    const outputScale = Math.max(3, deviceScale);
+
+    // viewport à la taille d'affichage (fit-to-width)
+    const viewport = page.getViewport({ scale: fitWidthScale });
+
+    // Canvas
+    const canvas = document.createElement("canvas");
+    canvas.style.width = `${viewport.width}px`;
+    canvas.style.height = `${viewport.height}px`;
+    canvas.width = Math.floor(viewport.width * outputScale);
+    canvas.height = Math.floor(viewport.height * outputScale);
+
+    const context = canvas.getContext("2d");
+    context.setTransform(outputScale, 0, 0, outputScale, 0, 0);
+
     viewer.appendChild(canvas);
-    const context = canvas.getContext('2d');
-    const scale = 0.75;
-    const dpi = window.devicePixelRatio || 2;
-    const viewport = page.getViewport({ scale });
-    canvas.width = viewport.width * dpi;
-    canvas.height = viewport.height * dpi;
-    context.setTransform(dpi, 0, 0, dpi, 0, 0);
-    page.render({ canvasContext: context, viewport }).promise.then(() => {
+
+    const renderTask = page.render({
+      canvasContext: context,
+      viewport,
+      intent: "display",
+      enableWebGL: true,
+      renderInteractiveForms: false,
+    });
+
+    renderTask.promise.then(() => {
       currentPage = pageNum;
+    }).catch((e) => {
+      console.error("Erreur rendu page:", e);
     });
   });
 }
 
-function goToPage(pageNum) {
-  renderPage(pageNum);
-}
-
-// ---------------------------
-// 6) Routes (hash routing)
-// ---------------------------
+/* ---------------------------
+   6) Routes (hash routing)
+--------------------------- */
 function mount() {
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/pdf/")) {
@@ -330,42 +358,9 @@ function mount() {
 window.addEventListener("hashchange", mount);
 window.addEventListener("load", mount);
 
-// ---------------------------
-// 7) Pinch-zoom (pdf.js) — identique
-// ---------------------------
-document.addEventListener('touchstart', function (event) {
-  const viewer = document.getElementById('pdfViewer');
-  if (!viewer) return;
-  if (event.touches.length === 2) {
-    initialDistance = getDistance(event.touches[0], event.touches[1]);
-  }
-}, false);
-
-document.addEventListener('touchmove', function (event) {
-  const viewer = document.getElementById('pdfViewer');
-  if (!viewer) return;
-  if (event.touches.length === 2 && initialDistance) {
-    const currentDistance = getDistance(event.touches[0], event.touches[1]);
-    const zoomChange = currentDistance / initialDistance;
-    currentZoom = Math.max(0.5, Math.min(2, currentZoom * zoomChange));
-    initialDistance = currentDistance;
-    renderPage(currentPage);
-  }
-}, false);
-
-document.addEventListener('touchend', function () {
-  initialDistance = 0;
-}, false);
-
-function getDistance(touch1, touch2) {
-  const dx = touch1.pageX - touch2.pageX;
-  const dy = touch1.pageY - touch2.pageY;
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
-// ---------------------------
-// 8) Service Worker & cache (paths dépôt externes-pwa-rules)
-// ---------------------------
+/* ---------------------------
+   7) Service Worker & cache
+--------------------------- */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/externes-pwa-rules/sw.js')
