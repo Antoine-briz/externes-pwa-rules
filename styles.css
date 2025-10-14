@@ -95,10 +95,15 @@ footer {
 
 /* Titre de section (étape 3) */
 .section-title {
-  font-size: 22px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
   font-weight: 700;
-  margin: 8px 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin: 12px 0 14px 0;
 }
+
 
 /* Liste des liens PDF (boutons pleine largeur, empilés) */
 .pdf-links {
