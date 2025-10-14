@@ -12,7 +12,13 @@ body,
 footer {
   background-color: #001f3d;
   color: #fff;
+  margin: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-smooth: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 
 /* Écran d’accueil centré */
 .welcome-page {
