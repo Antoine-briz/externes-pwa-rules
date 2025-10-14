@@ -235,50 +235,49 @@ export function openPDF(pdfPath) {
   const appContainer = document.getElementById("app");
   if (!appContainer) return;
 
-  const welcome = qs(".welcome-page");
-  const menu = qs("#menu");
+  // Cacher accueil + menu
+  const welcome = document.querySelector(".welcome-page");
+  const menu = document.querySelector("#menu");
   if (welcome) welcome.style.display = "none";
   if (menu) menu.style.display = "none";
 
-  clear(appContainer);
+  // Vider
+  appContainer.innerHTML = "";
 
+  // Conteneur viewer
   const pdfViewer = document.createElement("div");
   pdfViewer.id = "pdfViewer";
   appContainer.appendChild(pdfViewer);
 
-  // Nav (optionnelle)
-  const navContainer = document.createElement("div");
-  navContainer.classList.add("pdf-nav");
-  const prevButton = makeBtn("Précédent", () => goToPage(currentPage - 1));
-  const nextButton = makeBtn("Suivant", () => goToPage(currentPage + 1));
-  navContainer.appendChild(prevButton);
-  navContainer.appendChild(nextButton);
-  appContainer.appendChild(navContainer);
-
-  // Bouton « Retour » (identique) -> URL absolue vers l'accueil
-  const backButton = makeBtn("Retour", () => { window.location.href = BASE; }, ["btn-secondary"]);
+  // Bouton « Retour » (identique)
+  const backButton = document.createElement("button");
+  backButton.textContent = "Retour";
+  backButton.classList.add("btn", "btn-secondary");
   backButton.style.marginTop = "10px";
-  appContainer.appendChild(backButton);
+  backButton.addEventListener("click", () => {
+    window.location.href = "https://antoine-briz.github.io/externes-pwa-rules/";
+  });
+  // On l’ajoute APRÈS l’iframe pour qu’il soit visuellement en bas
+  // (mais on le crée déjà pour garder l’ordre du code clair)
 
-  const pdfUrl = "./pdf/" + pdfPath;
+  const file = "./pdf/" + pdfPath;
 
-  // Iframe natif (identique à l'app précédente)
+  // Astuce: on suggère un "fit to width" au viewer via le hash.
+  // Tous les viewers ne lisent pas ces paramètres, mais c’est inoffensif.
+  const viewerHint = "#view=FitH&zoom=page-width&pagemode=none";
+
   const iframe = document.createElement("iframe");
-  iframe.src = pdfUrl;
+  iframe.src = file + viewerHint;
+  iframe.setAttribute("title", "Document PDF");
   iframe.style.width = "100%";
-  iframe.style.height = "100vh";
+  iframe.style.height = "100vh";   // occupe toute la hauteur utile
   iframe.style.border = "none";
   iframe.style.overflow = "auto";
-  pdfViewer.appendChild(iframe);
 
-  // pdf.js optionnel (non bloquant)
-  if (typeof pdfjsLib !== "undefined") {
-    pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc_) => {
-      pdfDoc = pdfDoc_;
-      renderPage(1);
-    }).catch((e) => console.warn("pdf.js non utilisé :", e));
-  }
+  pdfViewer.appendChild(iframe);
+  appContainer.appendChild(backButton);
 }
+
 
 function renderPage(pageNum) {
   if (!pdfDoc) return;
