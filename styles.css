@@ -1,528 +1,150 @@
-/* 1. Rendre l'image "couverture" cliquable */
-.cover-img {
-    width: 100%;
-    cursor: pointer;
-}
-
-/* 2. Styliser le menu */
-#menu {
-    text-align: center;
-    margin-top: 0;          /* supprimer l'espace au-dessus */
-    padding-top: 10px;      /* petit padding si nécessaire */
-}
-
-#menu h2 {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* 3. Modifier la présentation des images dans le menu */
-#image-list {
-    display: flex;
-    flex-direction: column; /* Aligner les images en colonne */
-    align-items: center;
-    margin-top: 0;          /* supprimer l'espace inutile */
-    padding: 0;
-}
-
-.image-container {
-    margin: 10px;
-    text-align: center;
-    cursor: pointer;
-    flex: 1 1 100%; /* Permettre aux images de s'étendre pleinement */
-}
-
-.image-item {
-    width: 100%; /* Les images occuperont toute la largeur du conteneur */
-    height: auto; /* Laisser l'aspect de l'image intact */
-    object-fit: cover; /* Faire en sorte que les images remplissent l'espace sans déformation */
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-/* Supprimer les titres sous les images */
-.image-container p {
-    display: none; /* Ne plus afficher les titres sous les images */
-}
-
-/* 4. Styliser les boutons de navigation pour les PDF */
-.pdf-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;  /* Espacement entre les boutons */
-  margin: 20px 0;
-}
-
-.pdf-nav button {
-  padding: 10px 20px;
-  background-color: #4CAF50;  /* Couleur de fond */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.pdf-nav button:hover {
-  background-color: #45a049;  /* Couleur de fond au survol */
-}
-
-/* 6. Style général pour la page d'accueil */
-.welcome-page {
-    position: relative;
-    text-align: center;
-    background-color: #f4f4f4;
-}
-
-.welcome-page img {
-    width: 100%;
-    height: auto;
-}
-
-.access-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    padding: 15px 30px;
-    background-color: rgba(0, 188, 212, 0.8);
-    color: white;
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-}
-
-
-
-
-/* 8. Styliser les images de section dans le menu */
-#image-list img {
-    width: 100%;  /* Rendre les images aussi larges que possible (toute la largeur) */
-    height: auto;   /* Conserver la proportion des images */
-    margin-bottom: 10px;
-    transition: transform 0.3s ease; /* Transition pour un effet de zoom au survol */
-    object-fit: cover;  /* Assurer que l'image couvre toute la largeur sans déformation */
-}
-
-#image-list img:hover {
-    transform: scale(1.05); /* Légère augmentation de taille au survol */
-}
-
-/* 9. Styliser les boutons "Table des matières" et "Table des abréviations" */
-#table-of-contents, #abbreviations {
-    background-color: #003366;  /* Bleu marine foncé */
-    color: white;
-    font-size: 24px;  /* Augmenter la taille du texte */
-    padding: 20px 40px;
-    border: none;
-    border-radius: 10px;
-    width: 100%;  /* Placer chaque bouton sur une nouvelle ligne */
-    margin: 15px 0;  /* Espacement entre les boutons */
-    cursor: pointer;
-    text-align: center; /* Centrer le texte */
-    display: block; /* Forcer chaque bouton à prendre toute la largeur */
-}
-
-#table-of-contents:hover, #abbreviations:hover {
-    background-color: #002244;  /* Couleur bleue plus foncée au survol */
-    transition: background-color 0.3s ease;  /* Animation douce au survol */
-}
-
-/* Ajouter un petit effet d'ombre au texte pour le rendre plus visible */
-#table-of-contents, #abbreviations {
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);  /* Ombre portée pour un effet plus élégant */
-}
-
-/* Ajouter une animation de survol aux boutons */
-#table-of-contents:hover, #abbreviations:hover {
-    transform: scale(1.05);  /* Légère augmentation de la taille au survol */
-}
-
-/* Appliquer un peu de marge autour de la section des boutons pour les espacer du reste du contenu */
-#table-of-contents, #abbreviations {
-    margin-top: 10px;  /* Réduire l'espacement pour les mettre en haut */
-}
-
-/* 7. PDF Viewer */
-/* 7. PDF Viewer */
-/* 7. PDF Viewer */
-#pdfViewer {
-    width: 100vw;      /* largeur maximale de l'écran */
-    height: 100vh;     /* hauteur maximale de l'écran */
-    overflow: auto;    /* permettre le scroll */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background-color: #f0f0f0;
-    box-sizing: border-box;
-}
-
-/* iframe contenant le PDF */
-#pdfViewer iframe {
-    width: 100%;         /* La largeur de l'iframe prend toute la largeur disponible */
-    height: 100%;        /* La hauteur de l'iframe s'adapte à la hauteur du conteneur */
-    border: none;        /* Enlever la bordure de l'iframe */
-    transform-origin: top left;  /* Pour zoom centré en haut à gauche */
-    transform: scale(0.75);  /* Dézoome légèrement pour s'adapter au petit écran */
-    overflow: auto;        /* Permet le défilement horizontal et vertical */
-}
-
-
-#menu {
-    text-align: center;
-    margin-top: 0;          /* supprimer l'espace au-dessus */
-    padding-top: 10px;      /* petit padding si nécessaire */
-}
-
-#image-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 0;          /* supprimer l'espace inutile */
-    padding: 0;
-}
-
-#table-of-contents, #abbreviations {
-    margin-top: 10px;       /* léger espacement */
-}
-
-/* 1. Styliser l'image du titre dans le menu */
-#livret-title-menu img {
-    width: 100%;  /* L'image occupe toute la largeur du conteneur */
-    height: auto;  /* Maintient l'aspect de l'image */
-    margin-top: 20px;  /* Espacement au-dessus de l'image */
-    margin-bottom: 10px;  /* Espacement en dessous de l'image */
-}
-
-/* 1. Styliser l'image du titre dans le menu */
-#livret-title-menu {
-    width: 100%;            /* Occupation de toute la largeur disponible */
-    max-width: 800px;       /* Limiter la largeur maximale pour éviter l'extension sur des écrans larges */
-    height: auto;           /* Conserver les proportions */
-    margin: 0 auto 20px auto; /* Centrer l'image horizontalement et ajouter un espacement en bas */
-    display: block;         /* S'assurer que l'image est un bloc pour pouvoir centrer */
-    border-radius: 15px;    /* Ajouter un léger arrondi pour l'effet esthétique */
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Ajouter une ombre portée pour un effet de profondeur */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Ajouter une transition douce */
-}
-
-/* 2. Ajouter un léger effet de zoom au survol */
-#livret-title-menu:hover {
-    transform: scale(1.05); /* Légère augmentation de la taille au survol */
-    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2); /* Ombre plus marquée au survol */
-}
-
-
-/* Style pour les boutons de navigation (Précédent / Suivant) */
-.pdf-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;  /* Espacement entre les boutons */
-  margin: 20px 0;
-}
-
-.pdf-nav button {
-  padding: 10px 20px;
-  background-color: #4CAF50;  /* Couleur de fond */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.pdf-nav button:hover {
-  background-color: #45a049;  /* Couleur de fond au survol */
-}
-
-#pdfViewer {
-  display: flex; /* Utilisation de flexbox pour un meilleur alignement */
-  justify-content: flex-start; /* Aligner à gauche */
-  align-items: flex-start; /* Aligner en haut */
-  margin: 0; /* Retirer les marges par défaut */
-  padding: 0; /* Retirer les paddings */
-  width: 100%; /* S'assurer que l'élément occupe toute la largeur disponible */
-}
-
-#pdfViewer canvas {
-  margin: 0; /* Retirer toute marge autour du canvas */
-  padding: 0; /* Retirer les paddings */
-  display: block; /* Bloquer le canvas pour qu'il s'étire */
-}
-
-/* Ajouter un conteneur pour le PDF avec des barres de défilement */
-#pdfViewer {
+/* Couverture cliquable (accueil) */
+.cover-img, #cover-img {
   width: 100%;
-  height: 80vh; /* Hauteur du PDF */
-  overflow: auto; /* Active la barre de défilement si nécessaire */
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: flex-start; /* Aligner le PDF à gauche */
-  background-color: #f1f1f1; /* Optionnel, juste pour le fond */
-}
-
-#pdfViewer canvas {
-  margin: 0;  /* Supprime les marges autour du canvas */
-  display: block;  /* Assure que le canvas occupe toute la largeur */
-}
-
-/* Style du bouton Retour */
-#pdfViewer button {
-  width: 50%; 
-  margin: 10px 0;
-  padding: 8px 16px;  /* Bouton plus petit */
-  background-color: #ff5722;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  height: auto;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;  /* Taille de police réduite */
 }
 
-#pdfViewer button:hover {
-  background-color: #e64a19;
-}
-
-.btn.ghost {
-  background: transparent;
-  border: 2px solid #4169be; /* Bordure bleue */
-  color: #4169be; /* Texte bleu */
-}
-
-.btn.ghost:hover {
-  background-color: #4169be; /* Fond bleu au survol */
-  color: white; /* Texte blanc au survol */
-}
-
-#pdfViewer {
-    width: 100%;  /* S'assurer que le pdfViewer prend toute la largeur */
-    height: auto;
-}
-
-#pdfViewer canvas {
-    width: 100% !important;  /* Remplir toute la largeur de l'écran */
-    height: auto !important;  /* Adapter la hauteur en fonction de la largeur */
-}
-
-/* Style du footer */
+/* Couleurs globales (bleu marine foncé, texte blanc) */
+body,
+#app,
+.welcome-page,
 footer {
-    font-family: 'Verdana', 'Arial', sans-serif;  /* Utilisation de la police Verdana */
-    font-size: 16px;  /* Taille de police agréable */
-    font-weight: 500;  /* Poids de police plus léger */
-    color: #333;  /* Couleur du texte */
-    text-align: center;  /* Centrer le texte */
-    margin-top: 20px;  /* Un peu d'espace au-dessus */
-    padding: 10px;  /* Un peu d'espace autour du texte */
-    background-color: #f8f8f8;  /* Fond léger */
-    border-top: 1px solid #ddd;  /* Ligne de séparation subtile */
-}
-
-footer p {
-    font-style: italic;  /* Mettre le texte en italique */
-    color: #555;  /* Couleur légèrement plus claire */
-}
-
-#livret-title-menu {
-  width: 100%;        /* La largeur de l'image occupe toute la largeur de l'écran */
-  height: auto;       /* La hauteur de l'image est ajustée proportionnellement */
-  object-fit: contain; /* Empêche l'image d'être rognée */
-  display: block;     /* Empêche l'espacement sous l'image */
-  margin: 0;          /* Enlève les marges par défaut */
-}
-
-/* Applique le fond bleu à l'ensemble de la page */
-body {
-  background-color: #001f3d; /* Bleu marine foncé */
-  color: white; /* Texte blanc */
-}
-
-/* Si vous avez des sections spécifiques comme #app ou .welcome-page, appliquez aussi la même couleur */
-#app {
   background-color: #001f3d;
-  color: white;
+  color: #fff;
 }
 
-.welcome-page {
-  background-color: #001f3d;
-  color: white;
-}
-
-button {
-  background-color: #004080; /* Bleu plus clair pour les boutons si besoin */
-  color: white;
-}
-
-a {
-  color: #ffffff; /* Liens en blanc */
-}
-
-/* Appliquer la couleur bleue marine foncée aux boutons */
-#table-of-contents, #abbreviations {
-  background-color: #001f3d; /* Bleu marine foncé */
-  color: white; /* Texte blanc */
-  border: none; /* Enlever la bordure */
-  padding: 10px 20px; /* Ajouter un peu d'espace autour du texte */
-  font-size: 16px; /* Taille du texte */
-  cursor: pointer; /* Indicateur cliquable */
-  transition: background-color 0.3s ease; /* Transition pour un changement de couleur au survol */
-}
-
-#table-of-contents:hover, #abbreviations:hover {
-  background-color: #004080; /* Bleu plus clair au survol */
-}
-
-/* Appliquer la couleur bleue marine foncée au footer */
-footer {
-  background-color: #001f3d; /* Bleu marine foncé */
-  color: white; /* Texte blanc */
-  padding: 20px; /* Espacement autour du texte */
-  text-align: center; /* Centrer le texte */
-}
-
-footer p {
-  color: white; /* Rendre le texte "Amicalement, Dr Antoine Brizard" blanc */
-}
-
+/* Écran d’accueil centré */
 .welcome-page {
   display: flex;
-  justify-content: center; /* Centrer horizontalement */
-  align-items: center; /* Centrer verticalement */
-  height: 100vh; /* Prendre toute la hauteur de l'écran */
-  margin-top: 20px; /* Ajouter de l'espace au-dessus de l'image */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-#cover-img {
-  max-width: 100%; /* Pour garantir que l'image s'ajuste bien sur différents écrans */
-  height: auto;    /* Maintenir les proportions de l'image */
+/* MENU : conteneur */
+#menu {
+  display: none;            /* masqué par défaut jusqu’au clic couverture */
+  text-align: center;
+  padding: 16px;
 }
 
-footer {
-  background-color: #001f3d; /* Bleu marine foncé */
-  color: white; /* Texte blanc */
-  padding: 20px; /* Espacement autour du texte */
-  text-align: center; /* Centrer le texte */
-  border-top: none; /* Assurez-vous qu'il n'y a pas de bordure blanche au-dessus du footer */
+/* Titre (image titre.png) en haut du menu */
+#livret-title-menu {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  display: block;
+  margin: 12px auto 16px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
 }
 
-/* Styles généraux pour les boutons */
+/* Conteneur (on réutilise #image-list comme zone de contenu menu/section) */
+#image-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Boutons génériques */
 .btn {
-  background-color: #007bff;  /* Couleur bleue pour le bouton */
-  color: white;
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 14px 18px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 600;
+  transition: transform .08s ease, box-shadow .2s ease, background-color .2s ease;
+  display: inline-block;
+}
+.btn:hover { background-color: #0056b3; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-secondary {
+  background-color: #004080;
+}
+.btn-secondary:hover {
+  background-color: #003166;
 }
 
-.btn:hover {
-  background-color: #0056b3;  /* Changement de couleur au survol */
+/* Grille des sections (menu étape 2) */
+.section-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 8px 0 20px 0;
+}
+@media (min-width: 520px) {
+  .section-buttons { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 900px) {
+  .section-buttons { grid-template-columns: 1fr 1fr 1fr; }
+}
+.btn-section {
+  width: 100%;
+  text-align: center;
 }
 
-.ghost {
-  background-color: transparent;
-  border: 2px solid #007bff;  /* Bordure bleue */
-  color: #007bff;
+/* Titre de section (étape 3) */
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 8px 0 10px 0;
 }
 
-/* Spécifique au bouton "Retour" et son positionnement dans le PDF */
-#pdfViewer {
-  position: relative;  /* Position relative pour gérer l'emplacement du bouton */
-  padding-bottom: 70px;  /* Ajouter un padding en bas pour laisser de l'espace pour le bouton */
-}
-
-#pdfViewer .actions {
+/* Liste des liens PDF (boutons pleine largeur, empilés) */
+.pdf-links {
   display: flex;
-  justify-content: center;  /* Centre le bouton horizontalement */
-  align-items: center;      /* Centre le bouton verticalement */
-  position: absolute;       /* Permet de positionner précisément */
-  bottom: 20px;             /* Le bouton est situé à 20px du bas du conteneur */
-  width: 100%;              /* Occupe toute la largeur */
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.btn-link-like {
+  width: 100%;
+  text-align: left;
+  border-radius: 8px;
 }
 
-#pdfViewer .actions button {
-  background-color: #ff5722;  /* Couleur de fond du bouton */
-  color: white;               /* Couleur du texte */
-  border: none;               /* Supprime la bordure du bouton */
-  border-radius: 5px;         /* Coins arrondis */
-  padding: 12px 24px;         /* Taille du bouton */
-  font-weight: bold;          /* Gras pour le texte */
-  font-size: 16px;            /* Taille de la police */
-  cursor: pointer;           /* Curseur de la souris */
-  transition: background-color 0.3s;  /* Transition pour le survol */
-}
-
-/* Changer la couleur du bouton lorsqu'il est survolé */
-#pdfViewer .actions button:hover {
-  background-color: #e64a19;  /* Couleur du bouton au survol */
-}
-
-/* Styles pour le bouton retour */
-#pdfViewer .actions {
+/* Boutons navigation PDF (facultatif si pdf.js) */
+.pdf-nav {
   display: flex;
-  justify-content: center;  /* Centre le bouton */
-  margin-top: 20px;          /* Espacement au-dessus du bouton */
+  justify-content: center;
+  gap: 12px;
+  margin: 14px 0;
 }
+.pdf-nav .btn { font-weight: 700; }
 
-#pdfViewer button {
-  width: 50%; 
-  margin: 10px 0;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-#pdfViewer button:hover {
-  background-color: #0056b3;  /* Changement de couleur au survol */
-}
-
-#pdfViewer .ghost {
-  background-color: transparent;
-  border: 2px solid #007bff;
-  color: #007bff;
-}
-
-#pdfViewer .actions button {
-  display: block;
-  width: auto; /* Ajuste la largeur du bouton */
-}
-
-#iframe-container iframe {
-    width: 100%;  /* Largeur 100% */
-    height: 75vh; /* Hauteur ajustée à 75% de la hauteur de la fenêtre */
-    border: none; /* Suppression des bordures */
-    margin: 0 auto; /* Centrer l'iframe */
-}
-
-/* Assurer que l'affichage du PDF dans le viewer s'ajuste correctement */
+/* Zone d’affichage PDF */
 #pdfViewer {
   width: 100%;
-  height: 70vh; /* Ajuster la hauteur en fonction de l'écran */
-    margin-top: 10vh; 
-  overflow: auto; /* Ajouter des barres de défilement si nécessaire */
+  height: 75vh;
+  background: #f1f1f1;
+  overflow: auto;
+  border-radius: 6px;
+}
+
+/* Iframe PDF plein écran horizontal */
+#pdfViewer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Zone d’actions en bas (retour) */
+.actions-bottom {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: #f1f1f1; /* Optionnel */
+  justify-content: center;
+  margin: 16px 0 0 0;
 }
 
-#pdfViewer canvas {
-  display: block;
-  width: 100% !important;  /* Assurer que le canvas remplit toute la largeur */
-  height: auto !important;  /* Adapter la hauteur en fonction de la largeur */
+/* Footer sobre */
+footer {
+  text-align: center;
+  padding: 16px;
+  background: #001f3d;
+  color: #fff;
+  border-top: none;
 }
-
-#home .hero-img { 
-  border-radius: 0; /* Retirer les coins arrondis uniquement pour l'image "titre.png" */
-}
+footer p { margin: 0; }
