@@ -1,38 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Livret PWA</title>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>Externes PWA Rules</title>
 
-    <!-- Charger PDF.js via CDN comme un script classique -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <!-- PWA (facultatif mais recommandé) -->
+  <meta name="theme-color" content="#001f3d" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="img/icons/icon-192.png" />
 
-    <link rel="stylesheet" href="styles.css?v=1.0.0">  <!-- Assurez-vous du bon chemin -->
-    <link rel="manifest" href="manifest.json">
+  <!-- PDF.js (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css?v=1.0.0" />
 </head>
 <body>
-   <!-- Page d'accueil -->
- <div class="welcome-page">
-    <img src="img/couverture.png" alt="Couverture" id="cover-img" class="cover-img">
-</div>
+  <!-- 1) Accueil : image "couverture.png" cliquable -->
+  <div class="welcome-page">
+    <img
+      src="img/couverture.png"
+      alt="Couverture"
+      id="cover-img"
+      class="cover-img"
+    />
+  </div>
 
-<!-- Menu avec les liens vers les PDF -->
-<div id="menu" style="display: none;">
-    <img id="livret-title-menu" src="img/titre.png" alt="Guide pratique de l'externe MIR CHV" />
-    <div id="image-list">
-        <!-- Images de PDF seront affichées ici -->
-    </div>
-</div>
+  <!-- 2) Menu : image "titre.png" en haut + boutons de sections dans #image-list -->
+  <div id="menu">
+    <img
+      id="livret-title-menu"
+      src="img/titre.png"
+      alt="Guide pratique de l'externe MIR CHV"
+    />
+    <div id="image-list"><!-- Boutons générés par app.js --></div>
+  </div>
 
-<!-- Conteneur pour afficher le PDF -->
-<div id="app"></div>  
+  <!-- 3) Conteneur pour la vue PDF -->
+  <div id="app"></div>
 
-   <footer>
-       <p>Amicalement, Dr Marine Paul</p>
-   </footer>
+  <footer>
+    <p>Amicalement, Dr Marine Paul</p>
+  </footer>
 
-   <!-- Charger app.js -->
-   <script type="module" src="app.js?v=1.0.0"></script>
+  <noscript>Activez JavaScript pour utiliser cette application.</noscript>
+
+  <!-- App -->
+  <script type="module" src="app.js?v=1.0.0"></script>
 </body>
 </html>
