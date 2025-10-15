@@ -1,7 +1,7 @@
 
 {
     "name": "Guide pratique MIR CHV",
-    "short_name": "Guide pratique MIR CHV",
+    "short_name": "Guide pratique externes",
     "description": "Application pour accéder à des PDF de médecine intensive.",
     "start_url": "./index.html",
     "display": "standalone",
